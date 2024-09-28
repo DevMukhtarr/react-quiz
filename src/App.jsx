@@ -1,12 +1,11 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState, useEffect } from 'react';
+import './App.css';
 
 function App() {
-  const [answers, setAnwers] = useState([]);
-  const [random, setRandom] = useState(0);
-
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [userAnswers, setUserAnswers] = useState([]);
+  const [quizFinished, setQuizFinished] = useState(false);
+  const [score, setScore] = useState(0);
 
   const quizQuestions = [
     {
@@ -36,41 +35,81 @@ function App() {
     }
   ];
 
-  const handleRandom = () => {
-    const randomNumber = Math.floor(Math.random() * 5)
-    setRandom(randomNumber)
-    return randomNumber
-  }
+  useEffect(() => {
+    setUserAnswers(new Array(quizQuestions.length).fill(null));
+  }, []);
 
-  const handleQuizToDisplay = (quizQuestions) =>{
-    const randomIndex = handleRandom();
-    console.log(quizQuestions[randomIndex])
-      return quizQuestions[random]
+  const handleAnswer = (answer) => {
+    const newAnswers = [...userAnswers];
+    newAnswers[currentQuestionIndex] = answer;
+    setUserAnswers(newAnswers);
+  };
+
+  const handleNext = () => {
+    if (currentQuestionIndex < quizQuestions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
+    }
+  };
+
+  const handleFinish = () => {
+    const newScore = userAnswers.reduce((acc, answer, index) => {
+      if (answer === quizQuestions[index].correctAnswer) {
+        return acc + 1;
+      }
+      return acc;
+    }, 0);
+    setScore(newScore);
+    setQuizFinished(true);
+  };
+
+  const currentQuestion = quizQuestions[currentQuestionIndex];
+
+  if (quizFinished) {
+    return (
+      <div className="quiz-app">
+        <h1>Quiz Finished!</h1>
+        <p>Your score: {score} out of {quizQuestions.length}</p>
+        <button onClick={() => window.location.reload()}>Restart Quiz</button>
+      </div>
+    );
   }
 
   return (
-    <>
-      <h1>Quiz APP</h1>
-      <div className="card">
-        {/* <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button> */}
-        <div className="question">
-
+    <div className="quiz-app">
+      <h1>Quiz App</h1>
+      <div className="question-card">
+        <h2>Question {currentQuestionIndex + 1}</h2>
+        <p>{currentQuestion.question}</p>
+        <div className="options">
+          {currentQuestion.options.map((option, index) => (
+            <button
+              key={index}
+              onClick={() => handleAnswer(option)}
+              className={userAnswers[currentQuestionIndex] === option ? 'selected' : ''}
+            >
+              {option}
+            </button>
+          ))}
         </div>
-
-        <div className='options'>
-
+        <div className="navigation">
+          <button onClick={handlePrevious} disabled={currentQuestionIndex === 0}>
+            Previous
+          </button>
+          {currentQuestionIndex === quizQuestions.length - 1 ? (
+            <button onClick={handleFinish}>Finish</button>
+          ) : (
+            <button onClick={handleNext}>Next</button>
+          )}
         </div>
-        <button onClick={() => handleQuizToDisplay(quizQuestions)}>
-          Previous
-        </button>
-        <button>
-          Next
-        </button>
       </div>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
