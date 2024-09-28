@@ -4,30 +4,56 @@ import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [answers, setAnwers] = useState([]);
+
+  const quizQuestions = [
+    {
+      question: "What is the capital of France?",
+      options: ["Paris", "London", "Berlin", "Madrid"],
+      correctAnswer: "Paris"
+    },
+    {
+      question: "Which planet is known as the Red Planet?",
+      options: ["Earth", "Mars", "Jupiter", "Venus"],
+      correctAnswer: "Mars"
+    },
+    {
+      question: "Who wrote 'To Kill a Mockingbird'?",
+      options: ["Harper Lee", "J.K. Rowling", "Ernest Hemingway", "Jane Austen"],
+      correctAnswer: "Harper Lee"
+    },
+    {
+      question: "What is the largest mammal in the world?",
+      options: ["Elephant", "Blue Whale", "Giraffe", "Great White Shark"],
+      correctAnswer: "Blue Whale"
+    },
+    {
+      question: "Which element has the chemical symbol 'O'?",
+      options: ["Oxygen", "Osmium", "Oxide", "Ozone"],
+      correctAnswer: "Oxygen"
+    }
+  ];
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
+      <h1>Quiz APP</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
+        {/* <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
+        </button> */}
+        <div className="question">
+
+        </div>
+        <div className='options'>
+
+        </div>
+        <button>
+          Previous
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+        <button>
+          Next
+        </button>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
