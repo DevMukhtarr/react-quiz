@@ -5,6 +5,8 @@ import './App.css'
 
 function App() {
   const [answers, setAnwers] = useState([]);
+  const [random, setRandom] = useState(0);
+
 
   const quizQuestions = [
     {
@@ -34,6 +36,18 @@ function App() {
     }
   ];
 
+  const handleRandom = () => {
+    const randomNumber = Math.floor(Math.random() * 5)
+    setRandom(randomNumber)
+    return randomNumber
+  }
+
+  const handleQuizToDisplay = (quizQuestions) =>{
+    const randomIndex = handleRandom();
+    console.log(quizQuestions[randomIndex])
+      return quizQuestions[random]
+  }
+
   return (
     <>
       <h1>Quiz APP</h1>
@@ -44,10 +58,11 @@ function App() {
         <div className="question">
 
         </div>
+
         <div className='options'>
 
         </div>
-        <button>
+        <button onClick={() => handleQuizToDisplay(quizQuestions)}>
           Previous
         </button>
         <button>
