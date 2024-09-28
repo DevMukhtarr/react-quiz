@@ -34,11 +34,9 @@ function App() {
       correctAnswer: "Oxygen"
     }
   ];
-
   useEffect(() => {
     setUserAnswers(new Array(quizQuestions.length).fill(null));
   }, []);
-
   const handleAnswer = (answer) => {
     const newAnswers = [...userAnswers];
     newAnswers[currentQuestionIndex] = answer;
